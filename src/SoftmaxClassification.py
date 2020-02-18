@@ -24,7 +24,7 @@ def softmax(x):
     return x / x_sum
 
 def to_onehot(y, class_num):
-    y = torch.zeros((y.shape[0], class_num)).scatter_(1, y.unsqueeze(1), 1)
+    y = torch.zeros((y.shape[0], class_num)).scatter_(1, y.unsqueeze(1).long(), 1)
     return y
 
 
@@ -83,8 +83,8 @@ if __name__ == "__main__":
     batch_size = 64
     weights_shape = [28*28, 10]
     bais_len = 10
-    it_nums = 20
-    dataset_save_path = r'G:\xin.src\dive_into_deep_learning\dataset'
+    it_nums = 1000
+    dataset_save_path = r'G:\xin.src\dataset\dataset'
     download_dataset = True
     train_dataset, test_dataset = generate_dataset(dataset_save_path, download_dataset)
     train(train_dataset, test_dataset, lr, weights_shape, bais_len, batch_size, it_nums)

@@ -8,10 +8,10 @@ def generate_dataset(txt_file):
         corpus_chars  = f.read()
     corpus_chars = corpus_chars.replace('\n', ' ').replace('\r', ' ')[:10000]
     idx_to_char = list(set(corpus_chars))
-    char_to_inx = {char:idx for idx, char in enumerate(idx_to_char)}
+    char_to_idx = {char:idx for idx, char in enumerate(idx_to_char)}
     vocab_size = len(idx_to_char)
-    corpus_words = [char_to_inx[char] for char in corpus_chars]
-    return corpus_chars, corpus_words, idx_to_char, char_to_inx, vocab_size
+    corpus_words = [char_to_idx[char] for char in corpus_chars]
+    return corpus_chars, corpus_words, idx_to_char, char_to_idx, vocab_size
 
 def data_iter_random(corpus_words, batch_size, sqe_len, shuffle=True):
 
@@ -19,7 +19,7 @@ def data_iter_random(corpus_words, batch_size, sqe_len, shuffle=True):
     sample_start_indexs = [i*sqe_len for i in range(sample_nums)]
     if shuffle:
         np.random.shuffle(sample_start_indexs)
-    for i in range(0, sample_nums, batch_size):
+    for i in range(0, sample_nums-batch_size, batch_size):
         batch_sample_start_indexs = sample_start_indexs[i:i+batch_size]
 
         batch_x = list()
@@ -47,7 +47,7 @@ def data_iter_consecutive(corpus_words, batch_size, sqe_len):
 
 
 if __name__ == "__main__":
-    corpus_chars, corpus_words, idx_to_char, char_to_inx, vocab_size = generate_dataset(r'G:\xin.src\dive_into_deep_learning\dataset\jaychou_lyrics/jaychou_lyrics.txt')
+    corpus_chars, corpus_words, idx_to_char, char_to_idx, vocab_size = generate_dataset(r'G:\xin.src\dive_into_deep_learning\dataset\jaychou_lyrics/jaychou_lyrics.txt')
 
     data_loder = data_iter_consecutive(corpus_words, 2, 6)
     for x, y in tqdm(data_loder, leave=False):
